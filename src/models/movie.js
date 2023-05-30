@@ -11,7 +11,7 @@ const movieSchema = new mongoose.Schema({
     required: [true, 'Заполните режиссёра фильма'],
   },
   duration: {
-    type: String,
+    type: Number,
     required: [true, 'Заполните длительность фильма'],
   },
   year: {
