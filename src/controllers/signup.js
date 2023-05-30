@@ -16,7 +16,7 @@ module.exports.createUser = (req, res, next) => {
       password: hash,
       name,
     }))
-    .then((user) => res.send({ data: user }))
+    .then((user) => res.send(user))
     .catch((err) => {
       if (err.code === 11000) {
         next(new ConflictError('Пользователь уже существует'));

@@ -17,8 +17,6 @@ mongoose.connect('mongodb://127.0.0.1:27017/bitfilmsdb', {
   useNewUrlParser: true,
 });
 
-// const signupRouter = require('./routes/signup');
-
 app.use('/', router);
 
 app.listen(PORT, () => {
