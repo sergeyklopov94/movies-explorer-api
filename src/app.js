@@ -6,6 +6,7 @@ const helmet = require('helmet');
 
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const { errorHandler } = require('./middlewares/errorHandler');
+const { limiter } = require('./middlewares/limiter');
 
 const router = require('./routes/index');
 
@@ -17,8 +18,6 @@ const { PORT = 3000 } = process.env;
 
 const app = express();
 
-app.use(helmet());
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
@@ -29,10 +28,12 @@ mongoose.connect(MONGO, {
 
 app.use(requestLogger);
 
+app.use(limiter);
+app.use(helmet());
+
 app.use('/', router);
 
 app.use(errorLogger);
-
 app.use(errorHandler);
 
 app.listen(PORT, () => {

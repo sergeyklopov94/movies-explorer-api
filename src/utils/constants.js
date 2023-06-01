@@ -1,5 +1,6 @@
-const regEx = /(https?:\/\/)?(www\.)?([\w-]{1,32}\.[\w-]{1,5})([\w\d\-._~:/?#[\]@!$&'()*+,;=]*)/;
+const REGEX_FOR_URL = /(https?:\/\/)?(www\.)?([\w-]{1,32}\.[\w-]{1,5})([\w\d\-._~:/?#[\]@!$&'()*+,;=]*)/;
 
+const DATA_NOT_FOUND_PATH_ERR = 'Несуществующий путь';
 const INTERNAL_SERVER_ERR = 'На сервере произошла ошибка';
 const UNAUTHORIZED_ERR = 'Необходима авторизация';
 const UNAUTHORIZED_AUTH_ERR = 'Неверный email или пароль';
@@ -20,7 +21,8 @@ const DELETED_MOVIE_MESS = 'Фильм удален';
 const START_SERVER_MESS = 'Сервер запущен';
 
 module.exports = {
-  regEx,
+  REGEX_FOR_URL,
+  DATA_NOT_FOUND_PATH_ERR,
   INTERNAL_SERVER_ERR,
   UNAUTHORIZED_ERR,
   UNAUTHORIZED_AUTH_ERR,
