@@ -2,23 +2,39 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
+const helmet = require('helmet');
 
-const router = require('./routes/router');
+const { requestLogger, errorLogger } = require('./middlewares/logger');
+const { errorHandler } = require('./middlewares/errorHandler');
+
+const router = require('./routes/index');
+
+const { MONGO } = require('./utils/config');
+
+const { START_SERVER_MESS } = require('./utils/constants');
 
 const { PORT = 3000 } = process.env;
 
 const app = express();
 
+app.use(helmet());
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-mongoose.connect('mongodb://127.0.0.1:27017/bitfilmsdb', {
+mongoose.connect(MONGO, {
   useNewUrlParser: true,
 });
 
+app.use(requestLogger);
+
 app.use('/', router);
 
+app.use(errorLogger);
+
+app.use(errorHandler);
+
 app.listen(PORT, () => {
-  console.log('Сервер запущен на ' + PORT + ' порте');
+  console.log(START_SERVER_MESS);
 });

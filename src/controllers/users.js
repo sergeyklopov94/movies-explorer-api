@@ -3,11 +3,13 @@ const User = require('../models/user');
 const UncorrectDataError = require('../errors/uncorrect-data-err');
 const DataNotFoundError = require('../errors/data-not-found-err');
 
+const { DATA_NOT_FOUND_USER_ERR, UNCORRECT_DATA_USER_ERR } = require('../utils/constants');
+
 module.exports.getCurrentUser = (req, res, next) => {
   User.findById(req.user._id)
     .then((user) => {
       if (!user) {
-        throw new DataNotFoundError('Пользователь по указанному _id не найден');
+        throw new DataNotFoundError(DATA_NOT_FOUND_USER_ERR);
       }
       res.send(user);
     })
@@ -26,13 +28,13 @@ module.exports.updateUser = (req, res, next) => {
   )
     .then((user) => {
       if (!user) {
-        throw new DataNotFoundError('Такого пользователя не существует');
+        throw new DataNotFoundError(DATA_NOT_FOUND_USER_ERR);
       }
       res.send(user);
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        next(new UncorrectDataError('Переданы некорректные данные при обновлении профиля'));
+        next(new UncorrectDataError(UNCORRECT_DATA_USER_ERR));
       } else {
         next(err);
       }

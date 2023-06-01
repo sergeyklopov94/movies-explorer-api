@@ -3,6 +3,13 @@ const Movie = require('../models/movie');
 const UncorrectDataError = require('../errors/uncorrect-data-err');
 const DataNotFoundError = require('../errors/data-not-found-err');
 const ForbiddenError = require('../errors/forbidden-err');
+const {
+  UNCORRECT_DATA_MOVIE_ERR,
+  DATA_NOT_FOUND_MOVIE_ERR,
+  FORBIDDEN_MOVIE_ERR,
+  CAST_MOVIE_ERR,
+  DELETED_MOVIE_MESS,
+} = require('../utils/constants');
 
 module.exports.getCurrentUserMovies = (req, res, next) => {
   Movie.find({ owner: req.user._id })
@@ -23,7 +30,8 @@ module.exports.createMovie = (req, res, next) => {
     thumbnail,
     movieId,
     nameRU,
-    nameEN } = req.body;
+    nameEN,
+  } = req.body;
   Movie.create({
     country,
     director,
@@ -36,12 +44,13 @@ module.exports.createMovie = (req, res, next) => {
     movieId,
     nameRU,
     nameEN,
-    owner: req.user._id })
+    owner: req.user._id,
+  })
     .then((card) => card.populate('owner'))
     .then((card) => res.send(card))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        next(new UncorrectDataError('Переданы некорректные данные при создании фильма'));
+        next(new UncorrectDataError(UNCORRECT_DATA_MOVIE_ERR));
       } else {
         next(err);
       }
@@ -49,24 +58,21 @@ module.exports.createMovie = (req, res, next) => {
 };
 
 module.exports.deleteMovieById = (req, res, next) => {
-  console.log(req.params.movieId);
   Movie.findOne({ movieId: req.params.movieId })
     .populate('owner')
     .then((movie) => {
-      console.log(movie.owner._id.toString());
-      console.log(req.user._id);
       if (movie.length === 0) {
-        throw new DataNotFoundError('Такого фильма не существует');
+        throw new DataNotFoundError(DATA_NOT_FOUND_MOVIE_ERR);
       } else if (movie.owner._id.toString() !== req.user._id) {
-        throw new ForbiddenError('Запрещено удаление фильма другого пользователя');
+        throw new ForbiddenError(FORBIDDEN_MOVIE_ERR);
       }
       Movie.findOneAndDelete({ movieId: req.params.movieId })
         .populate('owner')
-        .then(() => res.send({ message: 'Фильм удалена' }));
+        .then(() => res.send({ message: DELETED_MOVIE_MESS }));
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        next(new UncorrectDataError('Указан некорректный _id фильма'));
+        next(new UncorrectDataError(CAST_MOVIE_ERR));
       } else {
         next(err);
       }

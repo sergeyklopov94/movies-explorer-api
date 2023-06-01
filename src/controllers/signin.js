@@ -2,6 +2,8 @@ const { NODE_ENV, JWT_SECRET } = process.env;
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 
+const { SUCCESS_AUTH_MESS } = require('../utils/constants');
+
 module.exports.login = (req, res, next) => {
   const { email, password } = req.body;
   User.findUserByCredentials(email, password)
@@ -16,7 +18,7 @@ module.exports.login = (req, res, next) => {
         httpOnly: true,
         sameSite: true,
       });
-      res.send({ message: 'Авторизация прошла успешно' });
+      res.send({ message: SUCCESS_AUTH_MESS });
     })
     .catch(next);
 };
