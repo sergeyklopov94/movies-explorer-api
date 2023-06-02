@@ -14,7 +14,7 @@ const { MONGO } = require('./utils/config');
 
 const { START_SERVER_MESS } = require('./utils/constants');
 
-const { PORT = 3000 } = process.env;
+const { PORT = 3000, NODE_ENV, DB } = process.env;
 
 const app = express();
 
@@ -22,7 +22,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-mongoose.connect(MONGO, {
+mongoose.connect(NODE_ENV === 'production' ? DB : MONGO, {
   useNewUrlParser: true,
 });
 

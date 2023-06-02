@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 
 const { SUCCESS_AUTH_MESS } = require('../utils/constants');
+const { JWT, NODE_PROD } = require('../utils/config');
 
 module.exports.login = (req, res, next) => {
   const { email, password } = req.body;
@@ -10,7 +11,7 @@ module.exports.login = (req, res, next) => {
     .then((user) => {
       const token = jwt.sign(
         { _id: user._id },
-        NODE_ENV === 'production' ? JWT_SECRET : 'super-strong-secret',
+        NODE_ENV === NODE_PROD ? JWT_SECRET : JWT,
         { expiresIn: '7d' },
       );
       res.cookie('jwt', token, {
