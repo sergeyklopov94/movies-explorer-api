@@ -39,8 +39,7 @@ module.exports.updateUser = (req, res, next) => {
       }
       if (err.code === 11000) {
         next(new ConflictError(CONFLICT_USER_ERR));
-      }
-      else {
+      } else {
         next(err);
       }
     });
