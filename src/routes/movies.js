@@ -8,6 +8,6 @@ moviesRouter.get('/', getCurrentUserMovies);
 
 moviesRouter.post('/', createMovieValidation, createMovie);
 
-moviesRouter.delete('/:movieId', movieIdValidation, deleteMovieById);
+moviesRouter.delete('/:_id', movieIdValidation, deleteMovieById);
 
 module.exports = moviesRouter;

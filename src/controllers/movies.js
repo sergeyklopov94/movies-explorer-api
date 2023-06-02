@@ -10,6 +10,7 @@ const {
   CAST_MOVIE_ERR,
   DELETED_MOVIE_MESS,
 } = require('../utils/constants');
+const movie = require('../models/movie');
 
 module.exports.getCurrentUserMovies = (req, res, next) => {
   Movie.find({ owner: req.user._id })
@@ -58,15 +59,16 @@ module.exports.createMovie = (req, res, next) => {
 };
 
 module.exports.deleteMovieById = (req, res, next) => {
-  Movie.findOne({ movieId: req.params.movieId })
+  Movie.findOne({ _id: req.params._id })
     .populate('owner')
     .then((movie) => {
-      if (movie.length === 0) {
+      console.log(movie);
+      if (movie === null) {
         throw new DataNotFoundError(DATA_NOT_FOUND_MOVIE_ERR);
       } else if (movie.owner._id.toString() !== req.user._id) {
         throw new ForbiddenError(FORBIDDEN_MOVIE_ERR);
       }
-      Movie.findOneAndDelete({ movieId: req.params.movieId })
+      Movie.findOneAndDelete({ _id: req.params._id })
         .populate('owner')
         .then(() => res.send({ message: DELETED_MOVIE_MESS }));
     })

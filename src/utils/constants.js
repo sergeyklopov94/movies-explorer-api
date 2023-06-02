@@ -12,6 +12,7 @@ const FORBIDDEN_MOVIE_ERR = 'Запрещено удаление фильма д
 const CAST_MOVIE_ERR = 'Указан некорректный _id фильма';
 const DATA_NOT_FOUND_USER_ERR = 'Такого пользователя не существует';
 const UNCORRECT_DATA_USER_ERR = 'Переданы некорректные данные при обновлении профиля';
+const CONFLICT_USER_ERR = 'Пользователь с таким Email уже существует';
 
 const SUCCESS_AUTH_MESS = 'Авторизация прошла успешно';
 const SUCCESS_LOGOUT_MESS = 'Осуществлен выход с Вашего аккаунта';
@@ -34,6 +35,7 @@ module.exports = {
   CAST_MOVIE_ERR,
   UNCORRECT_DATA_USER_ERR,
   DATA_NOT_FOUND_USER_ERR,
+  CONFLICT_USER_ERR,
   SUCCESS_AUTH_MESS,
   SUCCESS_LOGOUT_MESS,
   EMAIL_VALIDATOR_MESS,

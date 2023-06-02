@@ -34,7 +34,7 @@ app.use(helmet());
 app.use('/', router);
 
 app.use(errorLogger);
-app.use(errorHandler);
+//app.use(errorHandler);
 
 app.listen(PORT, () => {
   console.log(START_SERVER_MESS);
