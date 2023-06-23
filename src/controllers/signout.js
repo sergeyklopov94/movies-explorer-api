@@ -2,11 +2,10 @@ const { SUCCESS_LOGOUT_MESS } = require('../utils/constants');
 
 module.exports.logout = (req, res, next) => {
   try {
-    res.cookie('jwt', token, {
+    res.clearCookie('jwt', {
       sameSite: 'none',
       secure: true,
-    });
-    res.clearCookie('jwt').send({ message: SUCCESS_LOGOUT_MESS });
+    }).send({ message: SUCCESS_LOGOUT_MESS });
   } catch (err) {
     next(err);
   }
